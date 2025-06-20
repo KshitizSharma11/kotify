@@ -1,8 +1,14 @@
-import { Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Entity } from 'typeorm/decorator/entity/Entity';
-
+import { Playlist } from './playlist.entity';
 @Entity()
-export class userEntity {
+export class User {
   @PrimaryGeneratedColumn('uuid')
   id: number;
   @Column()
@@ -13,4 +19,7 @@ export class userEntity {
   hashedPassword: string;
   @CreateDateColumn()
   createdAt: Date;
+  @ManyToMany(() => Playlist, (playlist) => playlist.contributors)
+  @JoinTable()
+  playlists: Playlist[];
 }

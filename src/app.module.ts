@@ -7,16 +7,17 @@ import { UserModule } from './user/user.module';
 import { PlaylistModule } from './playlist/playlist.module';
 import { SearchModule } from './search/search.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { pgConfigDev } from './utils/configs/typeORM.config';
-
+import { ConfigModule } from '@nestjs/config';
+import dbConfig from './config/db.config';
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true, load: [dbConfig] }),
+    TypeOrmModule.forRootAsync({ useFactory: dbConfig }),
     SongsModule,
     AuthModule,
     UserModule,
     PlaylistModule,
     SearchModule,
-    TypeOrmModule.forRoot(pgConfigDev),
   ],
   controllers: [AppController],
   providers: [AppService],
